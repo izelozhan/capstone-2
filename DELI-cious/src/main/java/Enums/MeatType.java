@@ -1,6 +1,6 @@
 package Enums;
 
-public enum Meat {
+public enum MeatType {
     STEAK,
     HAM,
     TURKEY,

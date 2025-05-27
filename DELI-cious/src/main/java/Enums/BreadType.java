@@ -16,7 +16,7 @@ public enum BreadType {
         this.priceFor12 = priceFor12;
     }
 
-    public double getPrice(Size size){
+    public double getBasePrice(Size size){
         return switch (size){
             case FOUR_INCH -> priceFor4;
             case EIGHT_INCH -> priceFor8;

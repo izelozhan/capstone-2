@@ -13,8 +13,8 @@ public class DELIcious {
             int userInput = Integer.parseInt(scanner.nextLine());
 
             switch (userInput){
-                case 1 -> new OrderScreen(scanner);
-                case 2 -> {
+                case 1 -> OrderScreen.init();
+                case 0 -> {
                     System.out.println("Thank you! Goodbye!");
                     isRunning = false;
                 }

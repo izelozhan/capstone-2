@@ -1,6 +1,6 @@
 package Enums;
 
-public enum Sauce {
+public enum SauceType {
     MAYO,
     MUSTARD,
     KETCHUP,

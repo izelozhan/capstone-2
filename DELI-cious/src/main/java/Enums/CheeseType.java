@@ -1,6 +1,6 @@
 package Enums;
 
-public enum Cheese {
+public enum CheeseType {
     AMERICAN,
     CHEDDAR,
     SWISS,

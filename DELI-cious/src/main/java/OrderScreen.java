@@ -1,15 +1,17 @@
 import java.util.Scanner;
 
 public class OrderScreen {
-    private final Scanner scanner;
+    static Scanner scanner = new Scanner(System.in);
     private OrderScreen currentOrder;
-    Customer customer;
+    static Customer customer;
 
-    public OrderScreen(Scanner scanner) {
-        this.scanner = scanner;
+
+    public static void init() {
+        createCustomer();
+        displayOrderScreen();
     }
-
-    public void createCustomer(){
+ #
+    public static void createCustomer() {
         String name;
         String phone;
 
@@ -21,7 +23,7 @@ public class OrderScreen {
         customer = new Customer(name, phone);
     }
 
-    public void displayOrderScreen(){
+    public static void displayOrderScreen() {
         System.out.println("\n=== Order Menu ===");
         System.out.println("1) Add Sandwich");
         System.out.println("2) Add Drink");
@@ -32,10 +34,9 @@ public class OrderScreen {
 
         int userChoice = Integer.parseInt(scanner.nextLine());
 
-        switch (userChoice){
+        switch (userChoice) {
             case 1:
-                System.out.println("Welcome to our sandwich creator! Are you ready? Let's go! \n");
-                Sandwich sandwich =
+                System.out.println("Welcome to our sandwich creator! Are you ready to create delicious sandwich? Let's go! \n");
 
         }
 
