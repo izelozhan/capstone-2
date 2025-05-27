@@ -1,6 +1,6 @@
 package Enums;
 
-public enum RegularToppings {
+public enum ToppingType {
     LETTUCE,
     PEPPERS,
     ONIONS,
