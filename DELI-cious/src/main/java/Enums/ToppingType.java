@@ -1,9 +1,9 @@
 package Enums;
 
-public enum ToppingCategory {
+public enum ToppingType {
     MEAT,
     CHEESE,
     REGULAR,
     SAUCE,
-    SIDE
+
 }
