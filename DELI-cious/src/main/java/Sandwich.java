@@ -1,29 +1,36 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class Sandwich {
     BreadSelection bread;
-    List <Topping> toppingList;
-    List <Sauce> sauceList;
+    List<Topping> toppingList;
+    List<Sauce> sauceList;
     boolean isToasted;
 
-
-    public Sandwich(BreadSelection bread, List<Topping> toppingList, List<Sauce> sauceList, boolean isToasted) {
-        this.bread = bread;
-        this.toppingList = toppingList;
-        this.sauceList = sauceList;
-        this.isToasted = isToasted;
+    public Sandwich() {
+        this.toppingList = new ArrayList<>();
+        this.sauceList = new ArrayList<>();
+        this.isToasted = false;
     }
 
-    public static void addTopping(){
+    public void setBread(BreadSelection selectedBread) {
+        this.bread = selectedBread;
+    }
+
+    public void addTopping(Topping topping) {
+        toppingList.add(topping);
+    }
+
+    public void addSauce(Sauce sauce) {
+        sauceList.add(sauce);
+    }
+
+    public static void removeTopping() {
 
     }
 
-    public static void removeTopping(){
-
-    }
-
-    public static void getSize(){
-
+    public int getPrice(){
+        return 0;
     }
 }
 

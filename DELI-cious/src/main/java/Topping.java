@@ -1,6 +1,13 @@
-public class Topping extends SizePrice{
+public class Topping {
+    String name;
+    SizePrice[] pricing;
 
-    public Topping(Size size, Double price) {
-        super(size, price);
+    public Topping(String name, SizePrice[] pricing) {
+        this.name = name;
+        this.pricing = pricing;
+    }
+
+    public boolean isPremium(){
+        return pricing.length > 0;
     }
 }

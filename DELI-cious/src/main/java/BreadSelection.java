@@ -1,9 +1,12 @@
+import java.util.Arrays;
+import java.util.List;
+
 public class BreadSelection {
     String breadType;
-    SizePrice[] pricing;
+    List<SizePrice> pricing;
 
-    public BreadSelection( String breadType, SizePrice[] pricing) {
-        this.pricing = pricing;
+    public BreadSelection(String breadType, SizePrice[] pricing) {
+        this.pricing = Arrays.stream(pricing).toList();
         this.breadType = breadType;
     }
 }

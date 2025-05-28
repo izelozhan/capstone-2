@@ -1,0 +1,30 @@
+package Enums;
+
+public enum ToppingType {
+    LETTUCE,
+    PEPPERS,
+    ONIONS,
+    TOMATOES,
+    JALAPENOS,
+    CUCUMBERS,
+    PICKLES,
+    GUACAMOLE,
+    MUSHROOMS,
+
+
+    //these are premium
+
+    MEAT_STEAK,
+    MEAT_HAM,
+    MEAT_TURKEY,
+    MEAT_CHICKEN,
+    MEAT_BACON,
+    MEAT_SALAMI,
+    MEAT_ROAST_BEEF,
+
+    CHEESE_AMERICAN,
+    CHEESE_CHEDDAR,
+    CHEESE_SWISS,
+    CHEESE_PARMESAN,
+    CHEESE_PROVOLONE
+}
