@@ -1,4 +1,4 @@
-package Old.Enums;
+package Enums;
 
 public enum CheeseType {
     AMERICAN,
