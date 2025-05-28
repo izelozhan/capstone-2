@@ -1,4 +1,4 @@
-package Enums;
+package Old.Enums;
 
 public enum DrinkFlavor {
     COLA,
