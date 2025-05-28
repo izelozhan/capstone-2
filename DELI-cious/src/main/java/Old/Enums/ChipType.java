@@ -5,6 +5,4 @@ public enum ChipType {
     THICK_CUT,
     CURLY,
     WAFFLE,
-
-
 }

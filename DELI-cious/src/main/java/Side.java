@@ -1,9 +1,6 @@
-public class Side {
-    String name;
-    SizePrice[] pricing;
+public class Side extends SizePrice{
 
-    public Side(String name, SizePrice[] pricing) {
-        this.name = name;
-        this.pricing = pricing;
+    public Side(Size size, Double price) {
+        super(size, price);
     }
 }

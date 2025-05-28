@@ -1,9 +1,6 @@
-public class Topping {
-    String name;
-    SizePrice[] pricing;
+public class Topping extends SizePrice{
 
-    public Topping(String name, SizePrice[] pricing) {
-        this.name = name;
-        this.pricing = pricing;
+    public Topping(Size size, Double price) {
+        super(size, price);
     }
 }
