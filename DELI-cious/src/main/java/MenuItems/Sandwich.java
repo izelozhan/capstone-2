@@ -1,13 +1,13 @@
 package MenuItems;
 
+import Pricing.OtherProduct;
 import Pricing.Size;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Sandwich {
-    Size size;
-    BreadSelection bread;
+    Selection<Bread> breadSelection;
     List<Topping> toppingList;
     List<Sauce> sauceList;
     Side side;
@@ -21,12 +21,8 @@ public class Sandwich {
         this.isToasted = false;
     }
 
-    public void setSize(Size size){
-        this.size = size;
-    }
-
-    public void setBread(BreadSelection selectedBread) {
-        this.bread = selectedBread;
+    public void setBreadSelection(Selection<Bread> selectedBread) {
+        this.breadSelection = selectedBread;
     }
 
     public void addTopping(Topping topping) {
@@ -46,19 +42,34 @@ public class Sandwich {
     }
 
     public int getPrice(){
-        return 0;
+        int total = 0;
+        Size breadSize = this.breadSelection.getPricing().getSize();
+        for(OtherProduct p : this.getSauceList()) {
+            total += p.getPriceForSize(breadSize);
+        }
+        for(OtherProduct p : this.getToppingList()) {
+            total += p.getPriceForSize(breadSize);
+        }
+        if(this.side != null) {
+            total += this.side.getPriceForSize(breadSize);
+        }
+
+        if(this.hasExtraMeat) {
+            total += 2; //todo
+        }
+        if(this.hasExtraCheese) {
+            total += 2; //todo
+        }
+
+        return total;
     }
 
     public void setToasted(boolean toasted) {
         isToasted = toasted;
     }
 
-    public Size getSize() {
-        return size;
-    }
-
-    public BreadSelection getBread() {
-        return bread;
+    public Selection<Bread> getBreadSelection() {
+        return breadSelection;
     }
 
     public List<Topping> getToppingList() {

@@ -1,7 +1,10 @@
 package Utilities;
 
+import Pricing.OtherProduct;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Scanner;
 
 public class Utils {
@@ -12,19 +15,30 @@ public class Utils {
     public static String YELLOW = "\u001B[33m";
     public static String BLUE = "\u001B[34m";
     public static String CYAN = "\u001B[36m";
+    public static String BLACK = "\u001B[30m";
+    public static String PURPLE = "\u001B[35m";
+    public static String WHITE = "\u001B[37m";
+    public static String BG_WHITE = "\u001B[47m";
+    public static String UNDERLINE = "\u001B[4m";
+    public static String BG_CYAN = "\u001B[46m";
+    public static String BOLD = "\u001B[1m";
 
     public static void printTitle(String title) {
-        System.out.println(BLUE + "\n=== " + title + " ===" + RESET);
+        System.out.println(BOLD + BLUE + title +  RESET);
     }
 
     public static void printMenuOption(String option) {
         System.out.println(option);
     }
 
+    public static void printOrderSubtitles(String subtitle){
+        System.out.println(GREEN + BOLD + subtitle + RESET);
+    }
+
 
     public static String getStringFromTerminal(String message) {
         if (!message.isEmpty()) {
-            printInfo(message);
+            printGetUserOption(message);
         }
         return scanner.nextLine();
     }
@@ -70,7 +84,7 @@ public class Utils {
 
     public static Integer getIntegerFromTerminal(String message, boolean isRequired) {
         if (!message.isEmpty()) {
-            printInfo(message);
+            printGetUserOption(message);
         }
         while (true) {
             try {
@@ -88,7 +102,7 @@ public class Utils {
 
     public static Integer getIntegerWithRange(String message, boolean isRequired, int min, int max) {
         if (!message.isEmpty()) {
-            printInfo(message);
+            printGetUserOption(message);
         }
         while (true) {
             try {
@@ -109,6 +123,7 @@ public class Utils {
         }
     }
 
+
     public static void printError(String message) {
         System.out.println(RED + message + RESET);
     }
@@ -117,8 +132,24 @@ public class Utils {
         System.out.println(GREEN + message + RESET);
     }
 
+
     public static void printInfo(String message) {
         System.out.println(YELLOW + message + RESET);
     }
+
+    public static void printUnderline(String message){
+        System.out.println(UNDERLINE + message + RESET);
+    }
+
+    public static void printGetUserOption(String message){
+        System.out.println(CYAN + "=> " + message + RESET);
+    }
+
+    public static void printExitMessage(String message) {
+        System.out.println( BG_CYAN +BLACK+  message + RESET);
+    }
+
+
+
 
 }

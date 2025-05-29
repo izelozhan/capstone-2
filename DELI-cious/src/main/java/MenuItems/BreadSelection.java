@@ -1,24 +1,21 @@
-package MenuItems;
-
-import Pricing.SizePrice;
-
-import java.util.Arrays;
-import java.util.List;
-
-public class BreadSelection {
-    String breadType;
-    List<SizePrice> pricing;
-
-    public BreadSelection(String breadType, SizePrice[] pricing) {
-        this.pricing = Arrays.stream(pricing).toList();
-        this.breadType = breadType;
-    }
-
-    public String getBreadType() {
-        return breadType;
-    }
-
-    public List<SizePrice> getPricing() {
-        return pricing;
-    }
-}
+//package MenuItems;
+//
+//import Pricing.SizePrice;
+//
+//public class BreadSelection {
+//    Bread bread;
+//    SizePrice pricing;
+//
+//    public BreadSelection(Bread bread, SizePrice pricing) {
+//        this.pricing = pricing;
+//        this.bread = bread;
+//    }
+//
+//    public Bread getBread() {
+//        return bread;
+//    }
+//
+//    public SizePrice getPricing() {
+//        return pricing;
+//    }
+//}

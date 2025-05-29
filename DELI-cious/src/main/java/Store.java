@@ -4,11 +4,12 @@ import Pricing.Size;
 import Pricing.SizePrice;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Store {
-    public Map<BreadType, BreadSelection> breads = new HashMap<>();
+    public Map<BreadType, Bread> breads = new HashMap<>();
     public Map<DrinkType, Drink> drinks = new HashMap<>();
     public Map<ToppingType, Topping> toppings = new HashMap<>();
     public Map<ChipType, Chip> chips = new HashMap<>();
@@ -41,7 +42,7 @@ public class Store {
         }
 
         for (BreadType breadType : BreadType.values()) {
-            BreadSelection bread = new BreadSelection(breadType.name(), new SizePrice[]{
+            Bread bread = new Bread(breadType.name(), new SizePrice[]{
                     new SizePrice(FOUR_INCHES, 5.50),
                     new SizePrice(EIGHT_INCHES, 7.00),
                     new SizePrice(TWELVE_INCHES, 8.50),
@@ -133,10 +134,11 @@ public class Store {
         SignatureSandwich signatureSandwich = new SignatureSandwich(name);
         signatureSandwich.setToasted(isToasted);
 
-        BreadSelection bread = breads.get(breadType);
+        Bread bread = breads.get(breadType);
+        SizePrice breadPrice = Arrays.stream(bread.getSizePrices()).filter(i -> i.getSize().equals(size)).findFirst().get();
+        Selection<Bread> breadSelection = new Selection<>(bread, breadPrice);
 
-        signatureSandwich.setSize(size);
-        signatureSandwich.setBread(bread);
+        signatureSandwich.setBreadSelection(breadSelection);
         for (SauceType sauce : saucesTypes) {
             signatureSandwich.addSauce(this.sauces.get(sauce));
         }

@@ -1,5 +1,8 @@
 package Pricing;
 
+import java.util.Arrays;
+import java.util.Optional;
+
 public class OtherProduct {
     String name;
     SizePrice[] pricing;
@@ -13,7 +16,20 @@ public class OtherProduct {
         return name;
     }
 
-    public SizePrice[] getPricing() {
+    public SizePrice[] getSizePrices() {
         return pricing;
+    }
+
+    public double getPriceForSize(Size size) {
+        if(this.pricing.length == 0) {
+            return 0;
+        }
+        // any price exists for the size?
+        Optional<SizePrice> sizePrice = Arrays.stream(this.pricing).filter(i -> i.getSize().equals(size)).findFirst();
+        if(sizePrice.isEmpty()) {
+            return 0; //no price tag, so it's free lol
+        } else {
+            return sizePrice.get().getPrice();
+        }
     }
 }

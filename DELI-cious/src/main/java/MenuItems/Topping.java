@@ -10,7 +10,7 @@ public class Topping extends OtherProduct {
     }
 
     public boolean isPremium(){
-        return this.getPricing().length > 0;
+        return this.getSizePrices().length > 0;
     }
 
     public boolean isMeat() {
