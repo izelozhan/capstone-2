@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Sandwich {
+    Size size;
     BreadSelection bread;
     List<Topping> toppingList;
     List<Sauce> sauceList;
@@ -11,6 +12,10 @@ public class Sandwich {
         this.toppingList = new ArrayList<>();
         this.sauceList = new ArrayList<>();
         this.isToasted = false;
+    }
+
+    public void setSize(Size size){
+        this.size = size;
     }
 
     public void setBread(BreadSelection selectedBread) {
@@ -31,6 +36,10 @@ public class Sandwich {
 
     public int getPrice(){
         return 0;
+    }
+
+    public void setToasted(boolean toasted) {
+        isToasted = toasted;
     }
 }
 

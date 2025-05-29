@@ -18,6 +18,11 @@ public class DELIcious {
     Size EIGHT_INCHES = new Size("8");
     Size TWELVE_INCHES = new Size("12");
 
+    Size[] availableSizes = new Size[]{
+            FOUR_INCHES,
+            EIGHT_INCHES,
+            TWELVE_INCHES
+    };
 
     public static void main(String[] args) {
         boolean isRunning = true;
@@ -117,16 +122,16 @@ public class DELIcious {
 
     }
 
-    public ArrayList<SandwichTemplate> generateSignatureSandwiches() {
-        ArrayList<SandwichTemplate> signatureSandwiches = new ArrayList<>();
+    public ArrayList<SignatureSandwich> generateSignatureSandwiches() {
+        ArrayList<SignatureSandwich> signatureSandwiches = new ArrayList<>();
 
-        SandwichTemplate BLT = sandwichFactory("BLT", BreadType.WHITE, EIGHT_INCHES, new ToppingType[]{
+        SignatureSandwich BLT = sandwichFactory("BLT", BreadType.WHITE, EIGHT_INCHES, new ToppingType[]{
                 ToppingType.MEAT_BACON, ToppingType.TOMATOES, ToppingType.LETTUCE, ToppingType.CHEESE_CHEDDAR
         }, new SauceType[]{SauceType.RANCH}, true);
 
-        SandwichTemplate PhillyCheese = sandwichFactory("Philly Cheese Steak", BreadType.WHITE, EIGHT_INCHES, new ToppingType[]{ToppingType.MEAT_STEAK, ToppingType.CHEESE_AMERICAN, ToppingType.PEPPERS}, new SauceType[]{SauceType.MAYO}, true);
+        SignatureSandwich PhillyCheese = sandwichFactory("Philly Cheese Steak", BreadType.WHITE, EIGHT_INCHES, new ToppingType[]{ToppingType.MEAT_STEAK, ToppingType.CHEESE_AMERICAN, ToppingType.PEPPERS}, new SauceType[]{SauceType.MAYO}, true);
 
-        SandwichTemplate TurkeyClub = sandwichFactory("Turkey Club", BreadType.WHEAT, FOUR_INCHES, new ToppingType[]{ToppingType.CHEESE_SWISS, ToppingType.TOMATOES, ToppingType.LETTUCE, ToppingType.MEAT_TURKEY}, new SauceType[]{ SauceType.MAYO}, false);
+        SignatureSandwich TurkeyClub = sandwichFactory("Turkey Club", BreadType.WHEAT, FOUR_INCHES, new ToppingType[]{ToppingType.CHEESE_SWISS, ToppingType.TOMATOES, ToppingType.LETTUCE, ToppingType.MEAT_TURKEY}, new SauceType[]{SauceType.MAYO}, false);
 
         signatureSandwiches.add(BLT);
         signatureSandwiches.add(PhillyCheese);
@@ -135,9 +140,9 @@ public class DELIcious {
         return signatureSandwiches;
     }
 
-    public SandwichTemplate sandwichFactory(String name, BreadType breadType, Size size, ToppingType[] toppingTypes, SauceType[] saucesTypes, boolean isToasted) {
+    public SignatureSandwich sandwichFactory(String name, BreadType breadType, Size size, ToppingType[] toppingTypes, SauceType[] saucesTypes, boolean isToasted) {
 
-        SandwichTemplate signatureSandwich = new SandwichTemplate(name);
+        SignatureSandwich signatureSandwich = new SignatureSandwich(name);
         signatureSandwich.isToasted = isToasted;
 
         BreadSelection bread = breads.get(breadType);
