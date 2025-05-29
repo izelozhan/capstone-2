@@ -1,3 +1,5 @@
+package Pricing;
+
 public class Size {
     String name;
 

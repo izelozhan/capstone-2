@@ -1,3 +1,5 @@
+package Pricing;
+
 public class SizePrice {
     Size size;
     Double price;

@@ -1,18 +1,19 @@
 import Enums.*;
+import MenuItems.*;
+import Pricing.Size;
+import Pricing.SizePrice;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 
-public class DELIcious {
+public class Store {
     public Map<BreadType, BreadSelection> breads = new HashMap<>();
-    public Map<String, Drink> drinks = new HashMap<>();
+    public Map<DrinkType, Drink> drinks = new HashMap<>();
     public Map<ToppingType, Topping> toppings = new HashMap<>();
-    public Map<String, Chip> chips = new HashMap<>();
-    public Map<String, Sauce> sauces = new HashMap<>();
-
-    static Scanner scanner = new Scanner(System.in);
+    public Map<ChipType, Chip> chips = new HashMap<>();
+    public Map<SauceType, Sauce> sauces = new HashMap<>();
+    public Map<SideType, Side> sides = new HashMap<>();
 
     Size FOUR_INCHES = new Size("4");
     Size EIGHT_INCHES = new Size("8");
@@ -24,26 +25,8 @@ public class DELIcious {
             TWELVE_INCHES
     };
 
-    public static void main(String[] args) {
-        boolean isRunning = true;
-        prepare();
-
-        while (isRunning) {
-            System.out.println("Welcome to the DELIcious!");
-            System.out.println("1) Create New Order ");
-            System.out.println("0) Exit");
-
-            int userInput = Integer.parseInt(scanner.nextLine());
-
-            switch (userInput) {
-                case 1 -> Order.init();
-                case 0 -> {
-                    System.out.println("Thank you! Goodbye!");
-                    isRunning = false;
-                }
-                default -> System.out.println("Invalid input. Please try again.");
-            }
-        }
+    public Order createNewOrder(){
+        return new Order(this);
     }
 
     public void prepare() {
@@ -54,7 +37,7 @@ public class DELIcious {
                     new SizePrice(new Size("Large"), 3.00),
             });
 
-            drinks.put(flavorType.name(), drink);
+            drinks.put(flavorType, drink);
         }
 
         for (BreadType breadType : BreadType.values()) {
@@ -71,17 +54,22 @@ public class DELIcious {
             Chip chip = new Chip(chipType.name(), new SizePrice[]{
                     new SizePrice(new Size("Standard"), 1.50)
             });
-            chips.put(chipType.name(), chip);
+            chips.put(chipType, chip);
         }
 
         for (SauceType sauceType : SauceType.values()) {
             Sauce sauce = new Sauce(sauceType.name());
-            sauces.put(sauceType.name(), sauce);
+            sauces.put(sauceType, sauce);
         }
 
         for (ToppingType toppingType : ToppingType.values()) {
             Topping topping = new Topping(toppingType.name(), new SizePrice[0]);
-            toppings.put(toppingType.name(), topping);
+            toppings.put(toppingType, topping);
+        }
+
+        for (SideType sideType : SideType.values()){
+            Side side = new Side(sideType.name());
+            sides.put(sideType, side);
         }
 
         ToppingType[] meats = new ToppingType[]{
@@ -143,11 +131,12 @@ public class DELIcious {
     public SignatureSandwich sandwichFactory(String name, BreadType breadType, Size size, ToppingType[] toppingTypes, SauceType[] saucesTypes, boolean isToasted) {
 
         SignatureSandwich signatureSandwich = new SignatureSandwich(name);
-        signatureSandwich.isToasted = isToasted;
+        signatureSandwich.setToasted(isToasted);
 
         BreadSelection bread = breads.get(breadType);
-        SizePrice breadSizePrice = bread.pricing.stream().filter(s -> s.size.equals(size)).findFirst().get();
 
+        signatureSandwich.setSize(size);
+        signatureSandwich.setBread(bread);
         for (SauceType sauce : saucesTypes) {
             signatureSandwich.addSauce(this.sauces.get(sauce));
         }

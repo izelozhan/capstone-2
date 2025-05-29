@@ -86,6 +86,29 @@ public class Utils {
         }
     }
 
+    public static Integer getIntegerWithRange(String message, boolean isRequired, int min, int max) {
+        if (!message.isEmpty()) {
+            printInfo(message);
+        }
+        while (true) {
+            try {
+                String input = scanner.nextLine();
+                Integer num = Integer.parseInt(input);
+                if (num >= min && num <= max){
+                    return num;
+                } else {
+                    printError("Please enter a number between " + min + " - " + max);
+                }
+            } catch (Exception e) {
+                if (!isRequired) {
+                    return null;
+                } else {
+                    printError("Invalid value, please enter again.");
+                }
+            }
+        }
+    }
+
     public static void printError(String message) {
         System.out.println(RED + message + RESET);
     }

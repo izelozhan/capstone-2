@@ -1,5 +1,4 @@
 public class Customer {
-
     String name;
 
     public Customer(String name) {
@@ -8,9 +7,5 @@ public class Customer {
 
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 }
