@@ -24,15 +24,23 @@ public class Utils {
     public static String BOLD = "\u001B[1m";
 
     public static void printTitle(String title) {
-        System.out.println(BOLD + BLUE + title +  RESET);
+        System.out.println(UNDERLINE + BOLD + BLUE + title + RESET);
+    }
+
+    public static void printOrderSubtitles(String subtitle) {
+        System.out.println(GREEN + BOLD + subtitle + RESET);
     }
 
     public static void printMenuOption(String option) {
         System.out.println(option);
     }
 
-    public static void printOrderSubtitles(String subtitle){
-        System.out.println(GREEN + BOLD + subtitle + RESET);
+    public static void printGetUserOption(String message) {
+        System.out.println(CYAN + "=> " + message + RESET);
+    }
+
+    public static void printExistTopping(String message){
+        System.out.println(GREEN + message + RESET);
     }
 
 
@@ -82,43 +90,51 @@ public class Utils {
         }
     }
 
-    public static Integer getIntegerFromTerminal(String message, boolean isRequired) {
+    public static int getIntegerFromTerminal(String message, boolean isRequired) {
         if (!message.isEmpty()) {
             printGetUserOption(message);
         }
         while (true) {
             try {
                 String input = scanner.nextLine();
+                if (input.isEmpty()) {
+                    if (!isRequired) {
+                        return -1;
+                    } else {
+                        printError("This field is required.");
+                        continue;
+                    }
+                }
                 return Integer.parseInt(input);
             } catch (Exception e) {
-                if (!isRequired) {
-                    return null;
-                } else {
-                    printError("Invalid value, please enter again.");
-                }
+                printError("Invalid value, please enter again.");
             }
         }
     }
 
-    public static Integer getIntegerWithRange(String message, boolean isRequired, int min, int max) {
+    public static int getIntegerWithRange(String message, boolean isRequired, int min, int max) {
         if (!message.isEmpty()) {
             printGetUserOption(message);
         }
         while (true) {
             try {
-                String input = scanner.nextLine();
-                Integer num = Integer.parseInt(input);
-                if (num >= min && num <= max){
+                String input = scanner.nextLine().trim();
+                if (input.isEmpty()) {
+                    if (!isRequired) {
+                        return -1;
+                    } else {
+                        printError("This field is required.");
+                        continue;
+                    }
+                }
+                int num = Integer.parseInt(input);
+                if (num >= min && num <= max) {
                     return num;
                 } else {
                     printError("Please enter a number between " + min + " - " + max);
                 }
             } catch (Exception e) {
-                if (!isRequired) {
-                    return null;
-                } else {
-                    printError("Invalid value, please enter again.");
-                }
+                printError("Invalid value, please enter again.");
             }
         }
     }
@@ -137,19 +153,14 @@ public class Utils {
         System.out.println(YELLOW + message + RESET);
     }
 
-    public static void printUnderline(String message){
+    public static void printUnderline(String message) {
         System.out.println(UNDERLINE + message + RESET);
     }
 
-    public static void printGetUserOption(String message){
-        System.out.println(CYAN + "=> " + message + RESET);
-    }
 
     public static void printExitMessage(String message) {
-        System.out.println( BG_CYAN +BLACK+  message + RESET);
+        System.out.println(BG_CYAN + BLACK + message + RESET);
     }
-
-
 
 
 }

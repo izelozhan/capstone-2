@@ -26,14 +26,18 @@ public class Sandwich {
     }
 
     public void addTopping(Topping topping) {
-        toppingList.add(topping);
+        if (!toppingList.contains(topping)) {
+            toppingList.add(topping);
+        }
     }
 
     public void addSauce(Sauce sauce) {
-        sauceList.add(sauce);
+        if (!sauceList.contains(sauce)){
+            sauceList.add(sauce);
+        }
     }
 
-    public void setSide(Side side){
+    public void setSide(Side side) {
         this.side = side;
     }
 
@@ -41,23 +45,23 @@ public class Sandwich {
 
     }
 
-    public int getPrice(){
+    public int getPrice() {
         int total = 0;
         Size breadSize = this.breadSelection.getPricing().getSize();
-        for(OtherProduct p : this.getSauceList()) {
+        for (OtherProduct p : this.getSauceList()) {
             total += p.getPriceForSize(breadSize);
         }
-        for(OtherProduct p : this.getToppingList()) {
+        for (OtherProduct p : this.getToppingList()) {
             total += p.getPriceForSize(breadSize);
         }
-        if(this.side != null) {
+        if (this.side != null) {
             total += this.side.getPriceForSize(breadSize);
         }
 
-        if(this.hasExtraMeat) {
+        if (this.hasExtraMeat) {
             total += 2; //todo
         }
-        if(this.hasExtraCheese) {
+        if (this.hasExtraCheese) {
             total += 2; //todo
         }
 
