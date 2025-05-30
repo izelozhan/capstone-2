@@ -6,19 +6,17 @@ public class Main {
     public static void main(String[] args) throws IOException {
         boolean userExit = false;
         Store store = new Store();
-        store.prepare();
-
         while(!userExit) {
             Utils.printTitle("🥪 Welcome to DELIcious Sandwich Shop! 🥪");
             System.out.println("\nWhat would you like to do today?");
             System.out.println("1) Start a New Order ");
             System.out.println("0) Exit the Shop");
-
             int input = Utils.getIntegerWithRange("Please choose an option (0 or 1): ", true, 0, 1);
             switch (input) {
                 case 1 -> {
                     Order order = store.createNewOrder();
-                    order.init();
+                    OrderScreen screen = new OrderScreen(order, store);
+                    screen.displayWelcomeScreen();
                 }
                 case 0 -> userExit = true;
             }

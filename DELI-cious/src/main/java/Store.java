@@ -16,6 +16,7 @@ public class Store {
     public Map<ChipType, Product> chips = new HashMap<>();
     public Map<SauceType, Product> sauces = new HashMap<>();
     public Map<SideType, Product> sides = new HashMap<>();
+    public Map<ExtraType, Product> extras = new HashMap<>();
     public ArrayList<SignatureSandwich> signatureSandwiches = new ArrayList<>();
 
     Size FOUR_INCHES = new Size("4");
@@ -116,6 +117,18 @@ public class Store {
             toppings.put(cheeseType, topping);
         }
 
+        // ADDING extra meat as a product with prices
+        extras.put(ExtraType.EXTRA_MEAT, new Product(ExtraType.EXTRA_MEAT.name(), new SizePrice[] {
+                new SizePrice(FOUR_INCHES, 0.50),
+                new SizePrice(EIGHT_INCHES, 1.00),
+                new SizePrice(TWELVE_INCHES, 1.50)
+        }));
+
+        extras.put(ExtraType.EXTRA_CHEESE, new Product(ExtraType.EXTRA_CHEESE.name(), new SizePrice[] {
+                new SizePrice(FOUR_INCHES, 0.30),
+                new SizePrice(EIGHT_INCHES, 0.60),
+                new SizePrice(TWELVE_INCHES, 0.90)
+        }));
     }
 
     private void generateSignatureSandwiches() {

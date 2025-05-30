@@ -10,14 +10,14 @@ public class Sandwich {
     Selection<Product> breadSelection;
     List<Topping> toppingList;
     List<Product> sauceList;
+    List<Product> extras;
     Product side;
     boolean isToasted;
-    boolean hasExtraMeat;
-    boolean hasExtraCheese;
 
     public Sandwich() {
         this.toppingList = new ArrayList<>();
         this.sauceList = new ArrayList<>();
+        this.extras = new ArrayList<>();
         this.isToasted = false;
     }
 
@@ -58,11 +58,8 @@ public class Sandwich {
             total += this.side.getPriceForSize(breadSize);
         }
 
-        if (this.hasExtraMeat) {
-            total += 2; //todo
-        }
-        if (this.hasExtraCheese) {
-            total += 2; //todo
+        for(Product p : this.getExtras()) {
+            total += p.getPriceForSize(breadSize);
         }
 
         return total;
@@ -80,6 +77,10 @@ public class Sandwich {
         return toppingList;
     }
 
+    public List<Product> getExtras() {
+        return extras;
+    }
+
     public List<Product> getSauceList() {
         return sauceList;
     }
@@ -88,25 +89,25 @@ public class Sandwich {
         return isToasted;
     }
 
-    public void setHasExtraCheese(boolean hasExtraCheese) {
-        this.hasExtraCheese = hasExtraCheese;
-    }
-
-    public void setHasExtraMeat(boolean hasExtraMeat) {
-        this.hasExtraMeat = hasExtraMeat;
+    public void addExtra(Product extra) {
+        this.extras.add(extra);
     }
 
     public Product getSide() {
         return side;
     }
 
-    public boolean isHasExtraMeat() {
-        return hasExtraMeat;
+    public Size getSelectedSize() {
+       return this.getBreadSelection().getPricing().getSize();
     }
-
-    public boolean isHasExtraCheese() {
-        return hasExtraCheese;
-    }
+//
+//    public boolean isHasExtraMeat(Product extra) {
+//        return hasExtraMeat;
+//    }
+//
+//    public boolean isHasExtraCheese(Product extra) {
+//        return hasExtraCheese;
+//    }
 }
 
 
