@@ -57,8 +57,18 @@ The Cancel Order option discards the current order and returns the user to the h
 
 ## 🧠 Interesting Code Snippet
 
+Product class:
+All materials such as toppings, drinks, chips are based on Product class, which holds all pricing options, product name.
+The methods it has allow me to get price for the selected sandwich size.
+
+Selection:
+For chips, and drinks; user can choose a custom size, and that's not dependent on the bread size. As bread size is dependent on it's own size, bread also stored as a selection.
+Selection is a generic class, which stores the product, and user selected SizePrice class: which holds selected Size, and a double Price. 
+
+![interestingcode](https://github.com/user-attachments/assets/936f2a9d-3acc-43da-ae79-0d7857256e57)
 
 
-```java
+
+
 
 
