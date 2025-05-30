@@ -14,19 +14,20 @@ import java.io.IOException;
 public class OrderScreen {
     Order order;
     Store store;
+
     public OrderScreen(Order order, Store store) {
         this.order = order;
         this.store = store;
     }
 
-    public void displayWelcomeScreen() throws IOException {
+    public void displayWelcomeScreen()  {
         Utils.printTitle("\n=== Let's build your perfect sandwich! ===");
         order.setCustomer(new Customer(Utils.getStringFromTerminal("Before we start, what's your name?")));
         System.out.println("Nice to meet you, " + order.getCustomer().getName() + "! Let's get started on your order.");
         displayOrderScreen();
     }
 
-    public void displayOrderScreen() throws IOException {
+    public void displayOrderScreen()  {
         boolean userCanceled = false;
 
         while (!userCanceled) {
@@ -51,7 +52,9 @@ public class OrderScreen {
                 }
                 case 0 -> {
                     userCanceled = true;
-                    Utils.printExitMessage("\nOrder canceled. Thanks for visiting!");
+                    Utils.printExitMessage("Order canceled. Thanks for visiting!");
+                    System.out.println("\n");
+
                 }
                 default -> Utils.printError("Please choose a valid option!");
             }
@@ -65,9 +68,10 @@ public class OrderScreen {
         //get a valid sandwich option
         while (!userCanceled) {
             Utils.printTitle("\nDo you want to build your own sandwich or want to try our Signature Sandwiches?");
-            Utils.printMenuOption("1) Create Sandwich!");
-            Utils.printMenuOption("2) Signature Sandwiches");
-            Utils.printMenuOption("0) Go Back to Order Menu");
+            Utils.printMenuOption("""
+                    1) Create Sandwich!
+                    2) Signature Sandwiches
+                    0) Go Back to Order Menu""");
 
             int sandwichChoice = Utils.getIntegerFromTerminal("Please choose an option (0 to go back, 1-2 to proceed): ", true);
 
@@ -109,14 +113,8 @@ public class OrderScreen {
         order.drinks.add(new Selection<>(selectedDrink, drinkSize));
 
         System.out.println("\nThank you! We added your drink to your order.");
-        System.out.println("Redirecting you to the order menu...");
 
-        // 3 seconds
-        try {
-            Thread.sleep(4000);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
+        Utils.redirect();
     }
 
     public void displayChipScreen() {
@@ -139,17 +137,11 @@ public class OrderScreen {
         order.chips.add(new Selection<>(selectedChip, chipSize));
 
         System.out.println("\nThank you! We added your chip to your order.");
-        System.out.println("Redirecting you to the order menu...");
 
-        // 3 seconds
-        try {
-            Thread.sleep(4000);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
+        Utils.redirect();
     }
 
-    public void displayCheckoutScreen() throws IOException {
+    public void displayCheckoutScreen() {
         System.out.println(order.getSummary());
         boolean confirmOrder = Utils.getStringFromTerminal("Confirm order? [Y]es / [N]o").equalsIgnoreCase("y");
         if (confirmOrder) {

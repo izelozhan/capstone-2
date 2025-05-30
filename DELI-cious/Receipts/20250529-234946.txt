@@ -1,0 +1,29 @@
+===== Checkout Summary =====
+Customer:	asd
+Order Date:	2025-05-29T23:49:46.164565900
+============================
+
+Sandwiches:
+	- BLT
+		Bread:		WHITE (8 inch)	$7.00
+		Toasted:	No
+		-- Toppings --
+			- MEAT_BACON	$2.00
+			- TOMATOES	$0.00
+			- LETTUCE	$0.00
+			- CHEESE_CHEDDAR	$1.50
+		-- Sauces --
+			- RANCH
+		-- Side --
+			No side selected
+
+Drinks:
+	(No drinks selected)
+
+Chips:
+	(No chips selected)
+
+============================
+TOTAL:		$10.50
+============================
+

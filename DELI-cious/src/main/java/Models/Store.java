@@ -14,12 +14,14 @@ import java.util.Map;
 public class Store {
     public Map<BreadType, Product> breads = new HashMap<>();
     public Map<DrinkType, Product> drinks = new HashMap<>();
-    public Map<ToppingType, Topping> toppings = new HashMap<>();
     public Map<ChipType, Product> chips = new HashMap<>();
     public Map<SauceType, Product> sauces = new HashMap<>();
     public Map<SideType, Product> sides = new HashMap<>();
     public Map<ExtraType, Product> extras = new HashMap<>();
+
+    public Map<ToppingType, Topping> toppings = new HashMap<>();
     public ArrayList<SignatureSandwich> signatureSandwiches = new ArrayList<>();
+
 
     Size FOUR_INCHES = new Size("4 inch");
     Size EIGHT_INCHES = new Size("8 inch");
@@ -41,16 +43,24 @@ public class Store {
     }
 
     private void prepare() {
+        // independent sizes from bread
         for (DrinkType flavorType : DrinkType.values()) {
             Product drink = new Product(flavorType.name(), new SizePrice[]{
                     new SizePrice(new Size("Small"), 2.00),
                     new SizePrice(new Size("Medium"), 2.50),
                     new SizePrice(new Size("Large"), 3.00),
             });
-
             drinks.put(flavorType, drink);
         }
+        for (ChipType chipType : ChipType.values()) {
+            Product chip = new Product(chipType.name(), new SizePrice[]{
+                    new SizePrice(new Size("Standard"), 1.50)
+            });
+            chips.put(chipType, chip);
+        }
 
+
+        // dependent size on bread
         for (BreadType breadType : BreadType.values()) {
             Product bread = new Product(breadType.name(), new SizePrice[]{
                     new SizePrice(FOUR_INCHES, 5.50),
@@ -61,27 +71,23 @@ public class Store {
             breads.put(breadType, bread);
         }
 
-        for (ChipType chipType : ChipType.values()) {
-            Product chip = new Product(chipType.name(), new SizePrice[]{
-                    new SizePrice(new Size("Standard"), 1.50)
-            });
-            chips.put(chipType, chip);
-        }
-
         for (SauceType sauceType : SauceType.values()) {
             Product sauce = new Product(sauceType.name(), new SizePrice[0]);
             sauces.put(sauceType, sauce);
         }
 
+        // sides are free - no size price
+        for (SideType sideType : SideType.values()){
+            Product side = new Product(sideType.name(), new SizePrice[0]);
+            sides.put(sideType, side);
+        }
+
+        // regular toppings that are free
         for (ToppingType toppingType : ToppingType.values()) {
             Topping topping = new Topping(toppingType.name(), new SizePrice[0]);
             toppings.put(toppingType, topping);
         }
 
-        for (SideType sideType : SideType.values()){
-            Product side = new Product(sideType.name(), new SizePrice[0]);
-            sides.put(sideType, side);
-        }
 
         ToppingType[] meats = new ToppingType[]{
                 ToppingType.MEAT_TURKEY,
@@ -136,13 +142,45 @@ public class Store {
     private void generateSignatureSandwiches() {
         ArrayList<SignatureSandwich> signatureSandwiches = new ArrayList<>();
 
-        SignatureSandwich BLT = sandwichFactory("BLT", BreadType.WHITE, EIGHT_INCHES, new ToppingType[]{
-                ToppingType.MEAT_BACON, ToppingType.TOMATOES, ToppingType.LETTUCE, ToppingType.CHEESE_CHEDDAR
-        }, new SauceType[]{SauceType.RANCH}, true);
+        SignatureSandwich BLT = sandwichFactory(
+                "BLT",
+                BreadType.WHITE,
+                EIGHT_INCHES,
+                new ToppingType[]{
+                    ToppingType.MEAT_BACON,
+                    ToppingType.TOMATOES,
+                    ToppingType.LETTUCE,
+                    ToppingType.CHEESE_CHEDDAR
+                },
+                new SauceType[]{
+                    SauceType.RANCH
+                }, true);
 
-        SignatureSandwich PhillyCheese = sandwichFactory("Philly Cheese Steak", BreadType.WHITE, EIGHT_INCHES, new ToppingType[]{ToppingType.MEAT_STEAK, ToppingType.CHEESE_AMERICAN, ToppingType.PEPPERS}, new SauceType[]{SauceType.MAYO}, true);
+        SignatureSandwich PhillyCheese = sandwichFactory(
+                "Philly Cheese Steak",
+                BreadType.WHITE, EIGHT_INCHES,
+                new ToppingType[]{
+                    ToppingType.MEAT_STEAK,
+                    ToppingType.CHEESE_AMERICAN,
+                    ToppingType.PEPPERS
+                },
+                new SauceType[]{
+                    SauceType.MAYO
+                }, true);
 
-        SignatureSandwich TurkeyClub = sandwichFactory("Turkey Club", BreadType.WHEAT, FOUR_INCHES, new ToppingType[]{ToppingType.CHEESE_SWISS, ToppingType.TOMATOES, ToppingType.LETTUCE, ToppingType.MEAT_TURKEY}, new SauceType[]{SauceType.MAYO}, false);
+        SignatureSandwich TurkeyClub = sandwichFactory(
+                "Turkey Club",
+                BreadType.WHEAT,
+                FOUR_INCHES,
+                new ToppingType[]{
+                    ToppingType.CHEESE_SWISS,
+                    ToppingType.TOMATOES,
+                    ToppingType.LETTUCE,
+                    ToppingType.MEAT_TURKEY
+                },
+                new SauceType[]{
+                    SauceType.MAYO
+                }, false);
 
         signatureSandwiches.add(BLT);
         signatureSandwiches.add(PhillyCheese);
@@ -151,16 +189,15 @@ public class Store {
         this.signatureSandwiches = signatureSandwiches;
     }
 
-    public SignatureSandwich sandwichFactory(String name, BreadType breadType, Size size, ToppingType[] toppingTypes, SauceType[] saucesTypes, boolean isToasted) {
-
+    private SignatureSandwich sandwichFactory(String name, BreadType breadType, Size size, ToppingType[] toppingTypes, SauceType[] saucesTypes, boolean isToasted) {
         SignatureSandwich signatureSandwich = new SignatureSandwich(name);
         signatureSandwich.setToasted(isToasted);
 
         Product bread = breads.get(breadType);
         SizePrice breadPrice = Arrays.stream(bread.getSizePrices()).filter(i -> i.getSize().equals(size)).findFirst().get();
         Selection<Product> breadSelection = new Selection<>(bread, breadPrice);
-
         signatureSandwich.setBreadSelection(breadSelection);
+
         for (SauceType sauce : saucesTypes) {
             signatureSandwich.addOrRemoveSauce(this.sauces.get(sauce));
         }

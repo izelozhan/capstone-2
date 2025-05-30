@@ -22,7 +22,7 @@ public class Sandwich {
     }
 
     public double getPrice() {
-        double total = 0;
+        double total = this.breadSelection.getPricing().getPrice();
         Size breadSize = this.breadSelection.getPricing().getSize();
         for (Product p : this.getSauceList()) {
             total += p.getPriceForSize(breadSize);

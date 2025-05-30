@@ -2,7 +2,6 @@ package Models;
 
 import MenuItems.*;
 import Pricing.Product;
-import Pricing.Size;
 import Pricing.SizePrice;
 
 import java.io.IOException;
@@ -25,8 +24,30 @@ public class Order {
         this.timeStamp = LocalDateTime.now();
     }
 
+    public double getTotal() {
+        double total = 0;
 
-    public String getSummary() throws IOException {
+        for (Sandwich s : this.sandwiches) {
+            total += s.getPrice();
+        }
+        for (Selection<Product> c : this.chips) {
+            total += c.getPricing().getPrice();
+        }
+        for (Selection<Product> c : this.drinks) {
+            total += c.getPricing().getPrice();
+        }
+        return total;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    // returns order's summary to use in console / writing to file
+    public String getSummary() {
         StringBuilder out = new StringBuilder();
 
         out.append("===== Checkout Summary =====\n");
@@ -38,21 +59,22 @@ public class Order {
         int sandwichIndex = 1;
 
         for (Sandwich sandwich : sandwiches) {
+            // print signature sandwich name or 'Sandwich 1, Sandwich 2, etc
             String name = "Sandwich " + sandwichIndex;
             if (sandwich instanceof SignatureSandwich) {
                 name = ((SignatureSandwich) sandwich).getName();
             }
+            out.append("\t- ").append(name).append("\n");
 
+            // get bread name and pricing information from selection
             String breadName = sandwich.getBreadSelection().getProduct().getName();
             SizePrice breadPricing = sandwich.getBreadSelection().getPricing();
-
-            out.append("\t- ").append(name).append("\n");
             out.append("\t\tBread:\t\t").append(breadName)
                     .append(" (").append(breadPricing.getSize().getName())
                     .append(")\t$").append(String.format("%.2f", breadPricing.getPrice())).append("\n");
             out.append("\t\tToasted:\t").append(sandwich.isToasted() ? "Yes" : "No").append("\n");
 
-            // Extras
+            // loop in extras to print
             for (Product extra : sandwich.getExtras()) {
                 double extraPrice = extra.getPriceForSize(breadPricing.getSize());
                 out.append("\t\tExtra:\t\t").append(extra.getName())
@@ -71,7 +93,7 @@ public class Order {
                 }
             }
 
-            // Sauces
+            // Sauces, these are free
             out.append("\t\t-- Sauces --\n");
             if (sandwich.getSauceList().isEmpty()) {
                 out.append("\t\t\t(None)\n");
@@ -99,9 +121,9 @@ public class Order {
             out.append("\t(No drinks selected)\n");
         } else {
             for (Selection<Product> drink : drinks) {
-                out.append("\t- ").append(drink.getProduct().getName())
-                        .append(" (").append(drink.getPricing().getSize().getName()).append(")")
-                        .append("\t$").append(String.format("%.2f", drink.getPricing().getPrice())).append("\n");
+                out.append("\t- ")
+                        .append(drink.toString())
+                        .append("\n");
             }
         }
 
@@ -111,9 +133,9 @@ public class Order {
             out.append("\t(No chips selected)\n");
         } else {
             for (Selection<Product> chip : chips) {
-                out.append("\t- ").append(chip.getProduct().getName())
-                        .append(" (").append(chip.getPricing().getSize().getName()).append(")")
-                        .append("\t$").append(String.format("%.2f", chip.getPricing().getPrice())).append("\n");
+                out.append("\t- ")
+                        .append(chip.toString())
+                        .append("\n");
             }
         }
 
@@ -125,26 +147,4 @@ public class Order {
         return out.toString();
     }
 
-    public double getTotal() {
-        double total = 0;
-
-        for (Sandwich s : this.sandwiches) {
-            total += s.getPrice();
-        }
-        for (Selection<Product> c : this.chips) {
-            total += c.getProduct().getPriceForSize(c.getPricing().getSize());
-        }
-        for (Selection<Product> c : this.drinks) {
-            total += c.getProduct().getPriceForSize(c.getPricing().getSize());
-        }
-        return total;
-    }
-
-
-    public Customer getCustomer() {
-        return customer;
-    }
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
 }

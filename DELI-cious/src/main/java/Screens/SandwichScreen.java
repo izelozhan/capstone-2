@@ -44,7 +44,7 @@ public class SandwichScreen {
         finish();
     }
 
-    // step 1
+    // step 1: for regular, ask for bread and size, create selection
     private void chooseSandwichBaseRegular() {
         // create a blank sandwich
         this.sandwich = new Sandwich();
@@ -76,6 +76,7 @@ public class SandwichScreen {
         sandwich.setBreadSelection(new Selection<Product>(finalBread, selectedBreadPrice));
     }
 
+    // step 1: listing signatures, displaying contents
     private void chooseSandwichBaseSignature() {
         Utils.printTitle("\nOur Signature Sandwiches:");
         for (int i = 1; i <= store.signatureSandwiches.size(); i++) {
@@ -95,14 +96,6 @@ public class SandwichScreen {
             Utils.printUnderline("\nThis sandwich comes with following sauces: ");
             String joined = String.join(" | ", sandwich.getSauceList().stream().map(i -> i.getName()).toArray(String[]::new));
             System.out.println(joined);
-//                int size = sandwich.getSauceList().size();
-//                for (int i = 0; i < size; i++) {
-//                    Sauce sauce = sandwich.getSauceList().get(i);
-//                    System.out.print(sauce.getName());
-//                    if (i < size - 1) {
-//                        System.out.print(" | ");
-//                    }
-//                }
         }
         if (sandwich.isToasted()) {
             System.out.println("\nThis sandwich is toasted!");
@@ -153,6 +146,8 @@ public class SandwichScreen {
                 addTopping = false;
             }
         }
+
+        // check if it has MEAT or CHEESE, so user can ask for extra meat or cheese
         if (!sandwich.getToppingList().isEmpty()) {
             List<Topping> existingToppings = sandwich.getToppingList();
             boolean hasMeat = existingToppings.stream().anyMatch(i -> i.isPremium() && i.isMeat());
@@ -162,7 +157,6 @@ public class SandwichScreen {
                 Utils.printOrderSubtitles("\nYou have premium meat. Would you like to add extra meat?");
                 Utils.printMenuOption("1) Yes!");
                 Utils.printMenuOption("2) No.");
-
                 int input = Utils.getIntegerWithRange("Please choose an option: ", true, 1, 2);
                 if(input == 1) {
                     sandwich.addExtra(store.extras.get(ExtraType.EXTRA_MEAT));
@@ -173,14 +167,12 @@ public class SandwichScreen {
                 Utils.printOrderSubtitles("\nYou have premium cheese. Would you like to add extra cheese?");
                 Utils.printMenuOption("1) Yes!");
                 Utils.printMenuOption("2) No.");
-
                 int input = Utils.getIntegerWithRange("Please choose an option: ", true, 1, 2);
                 if(input == 1) {
                     sandwich.addExtra(store.extras.get(ExtraType.EXTRA_CHEESE));
                 }
             }
         }
-
     }
 
     // step 3
@@ -214,10 +206,9 @@ public class SandwichScreen {
     private void chooseToasted() {
         if (sandwich.isToasted()) {
             Utils.printOrderSubtitles("\nThis sandwich is toasted, but we can do not toasted, do you want it toasted?");
-            Utils.printMenuOption("1) Yes I would like to continue with toasted! ");
-            Utils.printMenuOption("2) No, I would like to not toasted!");
+        } else {
+            Utils.printOrderSubtitles("\nWould you like the sandwich toasted?");
         }
-        Utils.printOrderSubtitles("\nWould you like the sandwich toasted?");
         Utils.printMenuOption("1) Yes I would like to! ");
         Utils.printMenuOption("2) No, I'm good!");
         int input = Utils.getIntegerWithRange("Please choose an option: ", true, 1, 2);
@@ -253,12 +244,6 @@ public class SandwichScreen {
     private void finish() {
         order.sandwiches.add(sandwich);
         System.out.println("\nYou can now add a drink or chips, or create another sandwich.");
-        System.out.println("Redirecting you to the order menu...");
-        // 3 seconds
-        try {
-            Thread.sleep(4000);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
+        Utils.redirect();
     }
 }

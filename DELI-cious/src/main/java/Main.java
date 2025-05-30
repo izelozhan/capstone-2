@@ -22,7 +22,7 @@ public class Main {
             switch (input) {
                 case 1 -> {
                     Order order = store.createNewOrder();
-                   OrderScreen screen = new OrderScreen(order, store);
+                    OrderScreen screen = new OrderScreen(order, store);
                     screen.displayWelcomeScreen();
                 }
                 case 0 -> userExit = true;

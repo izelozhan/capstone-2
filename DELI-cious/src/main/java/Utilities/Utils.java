@@ -107,5 +107,15 @@ public class Utils {
         System.out.println(BG_CYAN + BLACK + message + RESET);
     }
 
+    public static void redirect(){
+        System.out.println("Redirecting...");
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
 
 }

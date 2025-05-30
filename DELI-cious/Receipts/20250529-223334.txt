@@ -1,0 +1,27 @@
+===== Checkout Summary =====
+Customer:	Guest
+Order Date:	2025-05-29T22:33:34.084024300
+============================
+
+Sandwiches:
+	- Sandwich 1
+		Bread:		WRAP (4 inch)	$5.50
+		Toasted:	No
+		Extra:		EXTRA_MEAT	$0.50
+		-- Toppings --
+			- MEAT_CHICKEN	$1.00
+		-- Sauces --
+			- MAYO
+		-- Side --
+			SAUCE
+
+Drinks:
+	- WATER (Large)	$3.00
+
+Chips:
+	- CURLY (Standard)	$1.50
+
+============================
+TOTAL:		$6.00
+============================
+

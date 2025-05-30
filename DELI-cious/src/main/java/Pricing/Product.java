@@ -5,7 +5,7 @@ import java.util.Optional;
 
 public class Product {
     String name;
-    SizePrice[] pricing;
+    SizePrice[] pricing; //storing all sizes and prices for a product
 
     public Product(String name, SizePrice[] pricing) {
         this.name = name;
