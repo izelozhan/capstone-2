@@ -1,5 +1,4 @@
 package Screens;
-
 import MenuItems.Selection;
 import Models.Customer;
 import Models.Order;
@@ -8,8 +7,6 @@ import Models.Store;
 import Pricing.Product;
 import Pricing.SizePrice;
 import Utilities.Utils;
-
-import java.io.IOException;
 
 public class OrderScreen {
     Order order;

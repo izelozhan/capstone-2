@@ -1,7 +1,6 @@
 package MenuItems;
 
 import Pricing.Product;
-import Pricing.Size;
 import Pricing.SizePrice;
 
 // storing a product with it's [size and price] ( user selected )
