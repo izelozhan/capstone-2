@@ -13,9 +13,6 @@ public class Utils {
     public static String BLUE = "\u001B[34m";
     public static String CYAN = "\u001B[36m";
     public static String BLACK = "\u001B[30m";
-    public static String PURPLE = "\u001B[35m";
-    public static String WHITE = "\u001B[37m";
-    public static String BG_WHITE = "\u001B[47m";
     public static String UNDERLINE = "\u001B[4m";
     public static String BG_CYAN = "\u001B[46m";
     public static String BOLD = "\u001B[1m";
@@ -46,45 +43,6 @@ public class Utils {
             printGetUserOption(message);
         }
         return scanner.nextLine();
-    }
-
-    public static String getDoubleFromTerminal(String message, boolean isRequired) {
-        if (!message.isEmpty()) {
-            printInfo(message);
-        }
-        while (true) {
-            try {
-                String input = scanner.nextLine();
-                Double.parseDouble(input);
-                return input;
-            } catch (Exception e) {
-                if (!isRequired) {
-                    return "";
-                } else {
-                    printError("Invalid value, please enter again.");
-                }
-            }
-        }
-    }
-
-    public static String getDateFromTerminal(String message, boolean isRequired) {
-        if (!message.isEmpty()) {
-            printInfo(message);
-        }
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        while (true) {
-            try {
-                String input = scanner.nextLine();
-                LocalDate.parse(input, dateFormatter);
-                return input;
-            } catch (Exception e) {
-                if (!isRequired) {
-                    return "";
-                } else {
-                    printError("Invalid value, please enter again.");
-                }
-            }
-        }
     }
 
     public static int getIntegerFromTerminal(String message, boolean isRequired) {
@@ -141,19 +99,9 @@ public class Utils {
         System.out.println(RED + message + RESET);
     }
 
-    public static void printSuccess(String message) {
-        System.out.println(GREEN + message + RESET);
-    }
-
-
-    public static void printInfo(String message) {
-        System.out.println(YELLOW + message + RESET);
-    }
-
     public static void printUnderline(String message) {
         System.out.println(UNDERLINE + message + RESET);
     }
-
 
     public static void printExitMessage(String message) {
         System.out.println(BG_CYAN + BLACK + message + RESET);

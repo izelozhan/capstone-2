@@ -1,3 +1,5 @@
+package Models;
+
 public class Customer {
     String name;
 

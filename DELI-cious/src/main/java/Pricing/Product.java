@@ -18,6 +18,7 @@ public class Product {
 
     public String getFormattedNameWithPrice(Size size) {
         return name + " - " + (this.pricing.length == 0 ? "FREE!" : "$" + this.getPriceForSize(size));
+
     }
 
     public SizePrice[] getSizePrices() {

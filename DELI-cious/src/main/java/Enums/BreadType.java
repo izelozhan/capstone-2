@@ -6,6 +6,3 @@ public enum BreadType {
     RYE,
     WRAP;
 }
-
-// https://www.baeldung.com/java-enum-values
-

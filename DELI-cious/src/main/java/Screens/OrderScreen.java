@@ -1,16 +1,15 @@
-import Enums.BreadType;
-import MenuItems.Sandwich;
+package Screens;
+
 import MenuItems.Selection;
-import MenuItems.SignatureSandwich;
-import MenuItems.Topping;
+import Models.Customer;
+import Models.Order;
+import Models.Receipt;
+import Models.Store;
 import Pricing.Product;
-import Pricing.Size;
 import Pricing.SizePrice;
 import Utilities.Utils;
-import java.util.Arrays;
-import java.util.List;
+
 import java.io.IOException;
-import java.util.Map;
 
 public class OrderScreen {
     Order order;
@@ -22,8 +21,8 @@ public class OrderScreen {
 
     public void displayWelcomeScreen() throws IOException {
         Utils.printTitle("\n=== Let's build your perfect sandwich! ===");
-        order.customer = new Customer(Utils.getStringFromTerminal("Before we start, what's your name?"));
-        System.out.println("Nice to meet you, " + order.customer.getName() + "! Let's get started on your order.");
+        order.setCustomer(new Customer(Utils.getStringFromTerminal("Before we start, what's your name?")));
+        System.out.println("Nice to meet you, " + order.getCustomer().getName() + "! Let's get started on your order.");
         displayOrderScreen();
     }
 
@@ -102,7 +101,7 @@ public class OrderScreen {
         Utils.printOrderSubtitles("Please choose a size for your drink: ");
         int drinkSizeIndex = 1;
         for (SizePrice sp : selectedDrink.getSizePrices()) {
-            System.out.println(drinkSizeIndex++ + ")" + sp.getSize().getName());
+            System.out.println(drinkSizeIndex++ + ")" + sp.getSize().getName() + " - $" + sp.getPrice());
         }
         int selectedSizeIndex = Utils.getIntegerWithRange("Enter a number: ", true, 1, selectedDrink.getSizePrices().length);
         SizePrice drinkSize = selectedDrink.getSizePrices()[selectedSizeIndex - 1];

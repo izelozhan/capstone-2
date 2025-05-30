@@ -1,0 +1,30 @@
+===== Checkout Summary =====
+Customer:	Guest
+Order Date:	2025-05-29T22:29:33.766428700
+============================
+
+Sandwiches:
+	- Sandwich 1
+		Bread:		WRAP (8 inch)	$7.00
+		Toasted:	No
+		Extra:		EXTRA_MEAT	$1.00
+		-- Toppings --
+			- MEAT_CHICKEN	$2.00
+			- TOMATOES	$0.00
+			- ONIONS	$0.00
+		-- Sauces --
+			- RANCH
+			- MUSTARD
+		-- Side --
+			AU_JUS
+
+Drinks:
+	- COLA (Large)	$3.00
+
+Chips:
+	- WAFFLE (Standard)	$1.50
+
+============================
+TOTAL:		$7.50
+============================
+

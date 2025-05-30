@@ -1,3 +1,5 @@
+package Models;
+
 import Enums.*;
 import MenuItems.*;
 import Pricing.Product;
@@ -19,11 +21,11 @@ public class Store {
     public Map<ExtraType, Product> extras = new HashMap<>();
     public ArrayList<SignatureSandwich> signatureSandwiches = new ArrayList<>();
 
-    Size FOUR_INCHES = new Size("4");
-    Size EIGHT_INCHES = new Size("8");
-    Size TWELVE_INCHES = new Size("12");
+    Size FOUR_INCHES = new Size("4 inch");
+    Size EIGHT_INCHES = new Size("8 inch");
+    Size TWELVE_INCHES = new Size("12 inch");
 
-    Size[] availableSizes = new Size[]{
+    public Size[] availableSizes = new Size[]{
             FOUR_INCHES,
             EIGHT_INCHES,
             TWELVE_INCHES
@@ -160,11 +162,11 @@ public class Store {
 
         signatureSandwich.setBreadSelection(breadSelection);
         for (SauceType sauce : saucesTypes) {
-            signatureSandwich.addSauce(this.sauces.get(sauce));
+            signatureSandwich.addOrRemoveSauce(this.sauces.get(sauce));
         }
 
         for (ToppingType topping : toppingTypes) {
-            signatureSandwich.addTopping(this.toppings.get(topping));
+            signatureSandwich.addOrRemoveTopping(this.toppings.get(topping));
         }
 
         return signatureSandwich;

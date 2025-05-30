@@ -21,32 +21,8 @@ public class Sandwich {
         this.isToasted = false;
     }
 
-    public void setBreadSelection(Selection<Product> selectedBread) {
-        this.breadSelection = selectedBread;
-    }
-
-    public void addTopping(Topping topping) {
-        if (!toppingList.contains(topping)) {
-            toppingList.add(topping);
-        }
-    }
-
-    public void addSauce(Product sauce) {
-        if (!sauceList.contains(sauce)){
-            sauceList.add(sauce);
-        }
-    }
-
-    public void setSide(Product side) {
-        this.side = side;
-    }
-
-    public static void removeTopping() {
-
-    }
-
-    public int getPrice() {
-        int total = 0;
+    public double getPrice() {
+        double total = 0;
         Size breadSize = this.breadSelection.getPricing().getSize();
         for (Product p : this.getSauceList()) {
             total += p.getPriceForSize(breadSize);
@@ -63,6 +39,30 @@ public class Sandwich {
         }
 
         return total;
+    }
+
+    public void setBreadSelection(Selection<Product> selectedBread) {
+        this.breadSelection = selectedBread;
+    }
+
+    public void addOrRemoveTopping(Topping topping) {
+        if (!toppingList.contains(topping)) {
+            toppingList.add(topping);
+        } else {
+            toppingList.remove(topping);
+        }
+    }
+
+    public void addOrRemoveSauce(Product sauce) {
+        if (!sauceList.contains(sauce)){
+            sauceList.add(sauce);
+        } else {
+            sauceList.remove(sauce);
+        }
+    }
+
+    public void setSide(Product side) {
+        this.side = side;
     }
 
     public void setToasted(boolean toasted) {
@@ -100,14 +100,7 @@ public class Sandwich {
     public Size getSelectedSize() {
        return this.getBreadSelection().getPricing().getSize();
     }
-//
-//    public boolean isHasExtraMeat(Product extra) {
-//        return hasExtraMeat;
-//    }
-//
-//    public boolean isHasExtraCheese(Product extra) {
-//        return hasExtraCheese;
-//    }
+
 }
 
 

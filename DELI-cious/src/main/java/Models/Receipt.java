@@ -1,8 +1,11 @@
+package Models;
+
 import java.io.*;
 import java.time.format.DateTimeFormatter;
 
 public class Receipt {
     static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss");
+
     public static void writeToFile(Order order) throws IOException {
         String directory = "Receipts";
         File receiptsDir = new File(directory);
@@ -17,4 +20,6 @@ public class Receipt {
         fileOut.close();
         System.out.println("Written to file: " + fileName);
     }
+
+
 }

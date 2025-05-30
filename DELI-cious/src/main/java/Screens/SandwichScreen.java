@@ -1,9 +1,13 @@
+package Screens;
+
 import Enums.BreadType;
 import Enums.ExtraType;
 import MenuItems.Sandwich;
 import MenuItems.Selection;
 import MenuItems.SignatureSandwich;
 import MenuItems.Topping;
+import Models.Order;
+import Models.Store;
 import Pricing.Product;
 import Pricing.Size;
 import Pricing.SizePrice;
@@ -45,14 +49,6 @@ public class SandwichScreen {
         // create a blank sandwich
         this.sandwich = new Sandwich();
 
-        //SIZE
-        Utils.printOrderSubtitles("\nAvailable Sizes:");
-        for (int i = 1; i <= store.availableSizes.length; i++) {
-            System.out.println(i + ")" + store.availableSizes[i - 1].getName());
-        }
-        int sizeIndex = Utils.getIntegerWithRange("Please select size: ", true, 1, store.availableSizes.length);
-        Size selectedSize = store.availableSizes[sizeIndex - 1];
-
         //BREAD
         Utils.printOrderSubtitles("\nPlease select your bread:");
         int breadIndex = 1;
@@ -60,12 +56,22 @@ public class SandwichScreen {
             System.out.println(breadIndex++ + ")" + type.name());
         }
         breadIndex = Utils.getIntegerWithRange("Please select bread: ", true, 1, store.breads.size());
-
         //converting keySet stream to Array
         BreadType breadType = store.breads.keySet().toArray(BreadType[]::new)[breadIndex - 1];
         Product finalBread = store.breads.get(breadType);
-        SizePrice selectedBreadPrice = Arrays.stream(finalBread.getSizePrices()).filter(i -> i.getSize().equals(selectedSize)).findFirst().get();
 
+        //SIZE
+        Utils.printOrderSubtitles("\nAvailable Sizes:");
+        for (int i = 1; i <= store.availableSizes.length; i++) {
+            Size size = store.availableSizes[i - 1];
+            double price = finalBread.getPriceForSize(size);
+            System.out.println(i + ")" + store.availableSizes[i - 1].getName() + " - " + price);
+        }
+        int sizeIndex = Utils.getIntegerWithRange("Please select size: ", true, 1, store.availableSizes.length);
+        Size selectedSize = store.availableSizes[sizeIndex - 1];
+
+
+        SizePrice selectedBreadPrice = Arrays.stream(finalBread.getSizePrices()).filter(i -> i.getSize().equals(selectedSize)).findFirst().get();
         //Set size and bread
         sandwich.setBreadSelection(new Selection<Product>(finalBread, selectedBreadPrice));
     }
@@ -103,7 +109,6 @@ public class SandwichScreen {
         }
     }
 
-
     // step 2
     private void chooseToppings() {
         //ask user to add extra toppings to signature sandwich
@@ -125,23 +130,25 @@ public class SandwichScreen {
 
             int toppingIndex = 1; // starts with 1 because I want to list items
 
+
             for (Topping topping : store.toppings.values()) {
                 boolean exist = sandwich.getToppingList().contains(topping);
-                String message = topping.getFormattedNameWithPrice(sandwich.getSelectedSize());
+                String message = (toppingIndex++) + ") " + topping.getFormattedNameWithPrice(sandwich.getSelectedSize());
                 if (!exist) {
                     Utils.printMenuOption(message);
                 } else {
                     Utils.printExistTopping(message);
                 }
             }
-            Utils.printMenuOption("0) Skip");
+            Utils.printMenuOption("0) Next");
+
 
             int userTopping = Utils.getIntegerWithRange("Please select topping: ", true, 0, store.toppings.size());
 
             if (userTopping != 0) {
                 // converts a new topping array and collect selected toppings, (-1 because index starts with 1)
                 Topping selectedTopping = store.toppings.values().toArray(Topping[]::new)[userTopping - 1];
-                sandwich.addTopping(selectedTopping);
+                sandwich.addOrRemoveTopping(selectedTopping);
             } else {
                 addTopping = false;
             }
@@ -191,14 +198,14 @@ public class SandwichScreen {
                     Utils.printExistTopping(printSauce);
                 }
             }
-            Utils.printMenuOption("0) Skip");
+            Utils.printMenuOption("0) Next");
 
             int userSauce = Utils.getIntegerWithRange("Please enter sauce: ", true, 0, store.sauces.size());
             if (userSauce == 0) {
                 addSauce = false;
             } else {
                 Product selectedSauce = store.sauces.values().toArray(Product[]::new)[userSauce - 1];
-                sandwich.addSauce(selectedSauce);
+                sandwich.addOrRemoveSauce(selectedSauce);
             }
         }
     }
@@ -228,7 +235,7 @@ public class SandwichScreen {
             for (Product side : store.sides.values()) {
                 System.out.println(sideIndex++ + ") " + side.getName());
             }
-            Utils.printMenuOption("0) Skip");
+            Utils.printMenuOption("0) Next");
 
             int userSide = Utils.getIntegerWithRange("Please enter side number: ", true, 0, store.sides.size());
             if (userSide == 0) {

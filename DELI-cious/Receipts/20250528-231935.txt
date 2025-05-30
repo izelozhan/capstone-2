@@ -1,1 +1,0 @@
-Customer: asasOrder date: 2025-05-28T23:19:35.569606400Sandwiches: - Philly Cheese SteakBread Type: WHITEToasted: YesHas extra meat: NoHas extra cheese: No-- Toppings ---MEAT_STEAK-CHEESE_AMERICAN-PEPPERS-- Sauces ---MAYO-VINAIGRETTE-- Side --AU_JUSDrinks: LEMONADE-SmallChips: WAFFLE-Standard
