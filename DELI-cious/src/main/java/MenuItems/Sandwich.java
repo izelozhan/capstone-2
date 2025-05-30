@@ -1,16 +1,16 @@
 package MenuItems;
 
-import Pricing.OtherProduct;
+import Pricing.Product;
 import Pricing.Size;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Sandwich {
-    Selection<Bread> breadSelection;
+    Selection<Product> breadSelection;
     List<Topping> toppingList;
-    List<Sauce> sauceList;
-    Side side;
+    List<Product> sauceList;
+    Product side;
     boolean isToasted;
     boolean hasExtraMeat;
     boolean hasExtraCheese;
@@ -21,7 +21,7 @@ public class Sandwich {
         this.isToasted = false;
     }
 
-    public void setBreadSelection(Selection<Bread> selectedBread) {
+    public void setBreadSelection(Selection<Product> selectedBread) {
         this.breadSelection = selectedBread;
     }
 
@@ -31,13 +31,13 @@ public class Sandwich {
         }
     }
 
-    public void addSauce(Sauce sauce) {
+    public void addSauce(Product sauce) {
         if (!sauceList.contains(sauce)){
             sauceList.add(sauce);
         }
     }
 
-    public void setSide(Side side) {
+    public void setSide(Product side) {
         this.side = side;
     }
 
@@ -48,10 +48,10 @@ public class Sandwich {
     public int getPrice() {
         int total = 0;
         Size breadSize = this.breadSelection.getPricing().getSize();
-        for (OtherProduct p : this.getSauceList()) {
+        for (Product p : this.getSauceList()) {
             total += p.getPriceForSize(breadSize);
         }
-        for (OtherProduct p : this.getToppingList()) {
+        for (Product p : this.getToppingList()) {
             total += p.getPriceForSize(breadSize);
         }
         if (this.side != null) {
@@ -72,7 +72,7 @@ public class Sandwich {
         isToasted = toasted;
     }
 
-    public Selection<Bread> getBreadSelection() {
+    public Selection<Product> getBreadSelection() {
         return breadSelection;
     }
 
@@ -80,7 +80,7 @@ public class Sandwich {
         return toppingList;
     }
 
-    public List<Sauce> getSauceList() {
+    public List<Product> getSauceList() {
         return sauceList;
     }
 
@@ -96,7 +96,7 @@ public class Sandwich {
         this.hasExtraMeat = hasExtraMeat;
     }
 
-    public Side getSide() {
+    public Product getSide() {
         return side;
     }
 

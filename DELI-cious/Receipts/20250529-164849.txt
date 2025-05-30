@@ -1,0 +1,33 @@
+===== Checkout Summary =====
+Customer     : ass
+Order date   : 2025-05-29T16:48:49.922265800
+============================
+
+Sandwiches:
+  - Philly Cheese Steak
+    Bread Type     : WHITE
+    Toasted        : Yes
+    Extra Meat     : Yes
+    Extra Cheese   : No
+    -- Toppings --
+      - MEAT_STEAK
+      - CHEESE_AMERICAN
+      - PEPPERS
+      - MUSHROOMS
+      - CHEESE_CHEDDAR
+    -- Sauces --
+      - MAYO
+      - THOUSAND_ISLAND
+    -- Side --
+      AU_JUS
+
+Drinks:
+  - DIET_COLA (Small)
+
+Chips:
+  - THICK_CUT (Standard)
+
+============================
+TOTAL: 9.0
+============================
+

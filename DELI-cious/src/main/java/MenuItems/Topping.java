@@ -1,9 +1,9 @@
 package MenuItems;
 
-import Pricing.OtherProduct;
+import Pricing.Product;
 import Pricing.SizePrice;
 
-public class Topping extends OtherProduct {
+public class Topping extends Product {
 
     public Topping(String name, SizePrice[] pricing) {
         super(name, pricing);

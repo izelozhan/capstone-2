@@ -3,11 +3,11 @@ package Pricing;
 import java.util.Arrays;
 import java.util.Optional;
 
-public class OtherProduct {
+public class Product {
     String name;
     SizePrice[] pricing;
 
-    public OtherProduct(String name, SizePrice[] pricing) {
+    public Product(String name, SizePrice[] pricing) {
         this.name = name;
         this.pricing = pricing;
     }

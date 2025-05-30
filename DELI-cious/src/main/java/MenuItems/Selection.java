@@ -1,9 +1,9 @@
 package MenuItems;
 
-import Pricing.OtherProduct;
+import Pricing.Product;
 import Pricing.SizePrice;
 
-public class Selection<T extends OtherProduct>  {
+public class Selection<T extends Product>  {
     T product;
     SizePrice pricing;
 

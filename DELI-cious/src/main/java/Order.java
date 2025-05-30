@@ -1,5 +1,6 @@
 import Enums.BreadType;
 import MenuItems.*;
+import Pricing.Product;
 import Pricing.Size;
 import Pricing.SizePrice;
 import Utilities.Utils;
@@ -13,13 +14,12 @@ import java.util.List;
 
 public class Order {
     ArrayList<Sandwich> sandwiches;
-    ArrayList<Selection<Drink>> drinks;
-    ArrayList<Selection<Chip>> chips;
+    ArrayList<Selection<Product>> drinks;
+    ArrayList<Selection<Product>> chips;
 
     LocalDateTime timeStamp;
     Customer customer;
     Store store;
-    ArrayList<SignatureSandwich> signatureSandwiches;
 
     public Order(Store store) {
         this.store = store;
@@ -27,7 +27,22 @@ public class Order {
         this.drinks = new ArrayList<>();
         this.chips = new ArrayList<>();
         this.timeStamp = LocalDateTime.now();
-        this.signatureSandwiches = store.generateSignatureSandwiches();
+    }
+
+    public double getTotal() {
+        double total = 0;
+
+        for (Sandwich s : this.sandwiches) {
+            total += s.getPrice();
+        }
+        for (Selection<Product> c : this.chips) {
+            total += c.getProduct().getPriceForSize(c.getPricing().getSize());
+        }
+        for (Selection<Product> c : this.drinks) {
+            total += c.getProduct().getPriceForSize(c.getPricing().getSize());
+        }
+
+        return total;
     }
 
     public void init() throws IOException {
@@ -125,24 +140,24 @@ public class Order {
 
             //converting keySet stream to Array
             BreadType breadType = store.breads.keySet().toArray(BreadType[]::new)[breadIndex - 1];
-            Bread finalBread = store.breads.get(breadType);
+            Product finalBread = store.breads.get(breadType);
             SizePrice selectedBreadPrice = Arrays.stream(finalBread.getSizePrices()).filter(i -> i.getSize().equals(selectedSize)).findFirst().get();
 
             //Set size and bread
-            sandwich.setBreadSelection(new Selection<Bread>(finalBread, selectedBreadPrice));
+            sandwich.setBreadSelection(new Selection<Product>(finalBread, selectedBreadPrice));
 
 
         } else {
             //Signature Sandwich
             Utils.printTitle("\nOur Signature Sandwiches:");
 
-            for (int i = 1; i <= signatureSandwiches.size(); i++) {
-                SignatureSandwich option = signatureSandwiches.get(i - 1);
+            for (int i = 1; i <= store.signatureSandwiches.size(); i++) {
+                SignatureSandwich option = store.signatureSandwiches.get(i - 1);
                 System.out.println(i + ") " + option.getName() + " - $" + option.getPrice());
             }
 
-            int signatureChoice = Utils.getIntegerWithRange("Please select sandwich: ", true, 1, signatureSandwiches.size());
-            sandwich = signatureSandwiches.get(signatureChoice - 1);
+            int signatureChoice = Utils.getIntegerWithRange("Please select sandwich: ", true, 1, store.signatureSandwiches.size());
+            sandwich = store.signatureSandwiches.get(signatureChoice - 1);
 
             // list toppings/ sauce and toasted info for signature
             if (!sandwich.getToppingList().isEmpty()) {
@@ -247,7 +262,7 @@ public class Order {
         while (addSauce) {
             Utils.printOrderSubtitles("Select select any sauces you would like to add: ");
             int sauceIndex = 1;
-            for (Sauce sauce : store.sauces.values()) {
+            for (Product sauce : store.sauces.values()) {
                 boolean exist = sandwich.getSauceList().contains(sauce);
                 String printSauce = sauceIndex++ + ") " + sauce.getName() + " - FREE";
 
@@ -263,7 +278,7 @@ public class Order {
             if (userSauce == 0) {
                 addSauce = false;
             } else {
-                Sauce selectedSauce = store.sauces.values().toArray(Sauce[]::new)[userSauce - 1];
+                Product selectedSauce = store.sauces.values().toArray(Product[]::new)[userSauce - 1];
                 sandwich.addSauce(selectedSauce);
             }
         }
@@ -287,9 +302,9 @@ public class Order {
 
         //SIDES
         while (addSide) {
-            System.out.println("Select side you would like to add: ");
+            Utils.printOrderSubtitles("\nSelect side you would like to add: ");
             int sideIndex = 1;
-            for (Side side : store.sides.values()) {
+            for (Product side : store.sides.values()) {
                 System.out.println(sideIndex++ + ") " + side.getName());
             }
             Utils.printMenuOption("0) Skip");
@@ -298,7 +313,7 @@ public class Order {
             if (userSide == 0) {
                 addSide = false;
             } else {
-                Side selectedSide = store.sides.values().toArray(Side[]::new)[userSide - 1];
+                Product selectedSide = store.sides.values().toArray(Product[]::new)[userSide - 1];
                 sandwich.setSide(selectedSide);
                 addSide = false; // only one side
             }
@@ -318,15 +333,17 @@ public class Order {
     }
 
     public void displayDrinkScreen() {
-        System.out.println("Please select a drink: ");
+        //drink flavor
+        Utils.printOrderSubtitles("\nDrink flavors: ");
         int drinkIndex = 1;
-        for (Drink drink : store.drinks.values()) {
+        for (Product drink : store.drinks.values()) {
             System.out.println(drinkIndex++ + ") " + drink.getName());
         }
-        int selectedDrinkIndex = Utils.getIntegerWithRange("Enter a number: ", true, 1, store.drinks.size());
+        int selectedDrinkIndex = Utils.getIntegerWithRange("Please select flavor: ", true, 1, store.drinks.size());
+        Product selectedDrink = store.drinks.values().toArray(Product[]::new)[selectedDrinkIndex - 1];
 
-        Drink selectedDrink = store.drinks.values().toArray(Drink[]::new)[selectedDrinkIndex - 1];
-        System.out.println("Please choose a size: ");
+        //drink size
+        Utils.printOrderSubtitles("Please choose a size for your drink: ");
         int drinkSizeIndex = 1;
         for (SizePrice sp : selectedDrink.getSizePrices()) {
             System.out.println(drinkSizeIndex++ + ")" + sp.getSize().getName());
@@ -336,20 +353,28 @@ public class Order {
 
         this.drinks.add(new Selection<>(selectedDrink, drinkSize));
 
-        //TODO seperate UI AND BUSINESS LOGIC
+        System.out.println("\nThank you! We added your drink to your order.");
+        System.out.println("Redirecting you to the order menu...");
+
+        // 3 seconds
+        try {
+            Thread.sleep(4000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 
     public void displayChipScreen() {
-        System.out.println("Please select a chip type: ");
+        Utils.printOrderSubtitles("\nChip Flavors: ");
         int chipIndex = 1;
-        for (Chip chip : store.chips.values()) {
+        for (Product chip : store.chips.values()) {
             System.out.println(chipIndex++ + ") " + chip.getName());
         }
         int selectedChipIndex = Utils.getIntegerWithRange("Enter a number: ", true, 1, store.chips.size());
 
-        Chip selectedChip = store.chips.values().toArray(Chip[]::new)[selectedChipIndex - 1];
+        Product selectedChip = store.chips.values().toArray(Product[]::new)[selectedChipIndex - 1];
 
-        System.out.println("Please choose a size: ");
+        Utils.printGetUserOption("Please choose a size: ");
         int chipSizeIndex = 1;
         for (SizePrice sp : selectedChip.getSizePrices()) {
             System.out.println(chipSizeIndex++ + ")" + sp.getSize().getName() + " - $" + sp.getPrice());
@@ -357,112 +382,104 @@ public class Order {
         int selectedChipSizeIndex = Utils.getIntegerWithRange("Enter a number: ", true, 1, selectedChip.getSizePrices().length);
         SizePrice chipSize = selectedChip.getSizePrices()[selectedChipSizeIndex - 1];
         this.chips.add(new Selection<>(selectedChip, chipSize));
+
+        System.out.println("\nThank you! We added your chip to your order.");
+        System.out.println("Redirecting you to the order menu...");
+
+        // 3 seconds
+        try {
+            Thread.sleep(4000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 
-    public void displayCheckoutScreen() throws IOException {
+    public String getSummary() throws IOException {
         StringBuilder out = new StringBuilder();
-        out.append("Customer: " + customer.getName());
-        out.append("\n");
-        out.append("Order date: " + this.timeStamp.toString());
-        out.append("\n");
-        out.append("Sandwiches: ");
-        out.append("\n");
+
+        out.append("===== Checkout Summary =====\n");
+        out.append("Customer     : " + customer.getName()).append("\n");
+        out.append("Order date   : " + this.timeStamp.toString());
+        out.append("\n============================\n\n");
+
+        out.append("Sandwiches:\n");
         int sandwichIndex = 1;
+
         for (Sandwich sandwich : sandwiches) {
             String name = "Sandwich " + sandwichIndex;
             if (sandwich instanceof SignatureSandwich) {
                 name = ((SignatureSandwich) sandwich).getName();
             }
-            out.append("- " + name);
-            out.append("\n");
 
-            out.append("Bread Type: " + sandwich.getBreadSelection().getProduct().getName());
-            out.append("\n");
+            out.append("  - ").append(name).append("\n");
+            out.append("    Bread Type     : ").append(sandwich.getBreadSelection().getProduct().getName()).append("\n");
+            out.append("    Toasted        : ").append(sandwich.isToasted() ? "Yes" : "No").append("\n");
+            out.append("    Extra Meat     : ").append(sandwich.isHasExtraMeat() ? "Yes" : "No").append("\n");
+            out.append("    Extra Cheese   : ").append(sandwich.isHasExtraCheese() ? "Yes" : "No").append("\n");
 
-
-            out.append("Toasted: " + (sandwich.isToasted() ? "Yes" : "No"));
-            out.append("\n");
-
-
-            out.append("Has extra meat: " + (sandwich.isHasExtraMeat() ? "Yes" : "No"));
-            out.append("\n");
-
-            out.append("Has extra cheese: " + (sandwich.isHasExtraCheese() ? "Yes" : "No"));
-            out.append("\n");
-
-
-            out.append("-- Toppings --");
-            out.append("\n");
-
-            for (Topping topping : sandwich.getToppingList()) {
-                out.append("-" + topping.getName());
-                out.append("\n");
-
-            }
-            out.append("-- Sauces --");
-            out.append("\n");
-
-            for (Sauce sauce : sandwich.getSauceList()) {
-                out.append("-" + sauce.getName());
-                out.append("\n");
-
-            }
-            out.append("-- Side --");
-            out.append("\n");
-
-            if (sandwich.getSide() == null) {
-                out.append("No side selected");
+            out.append("    -- Toppings --\n");
+            if (sandwich.getToppingList().isEmpty()) {
+                out.append("      (None)\n");
             } else {
-                out.append(sandwich.getSide().getName());
+                for (Topping topping : sandwich.getToppingList()) {
+                    out.append("      - ").append(topping.getName()).append("\n");
+                }
             }
+
+            out.append("    -- Sauces --\n");
+            if (sandwich.getSauceList().isEmpty()) {
+                out.append("      (None)\n");
+            } else {
+                for (Product sauce : sandwich.getSauceList()) {
+                    out.append("      - ").append(sauce.getName()).append("\n");
+                }
+            }
+
+            out.append("    -- Side --\n");
+            if (sandwich.getSide() == null) {
+                out.append("      No side selected\n");
+            } else {
+                out.append("      ").append(sandwich.getSide().getName()).append("\n");
+            }
+
+            out.append("\n");
             sandwichIndex++;
-
-            out.append("\n");
-            out.append("\n");
-
-        }
-        out.append("Drinks: ");
-        out.append("\n");
-
-        for (Selection<Drink> drink : drinks) {
-            out.append(drink.getProduct().getName() + "-" + drink.getPricing().getSize().getName());
-            out.append("\n");
-
-        }
-        out.append("Chips: ");
-        out.append("\n");
-
-        for (Selection<Chip> chip : chips) {
-            out.append(chip.getProduct().getName() + "-" + chip.getPricing().getSize().getName());
-            out.append("\n");
-
         }
 
-        out.append(getTotal());
+        out.append("Drinks:\n");
 
-        out.append("\n");
-        System.out.println(out.toString());
-        out.append("\n");
-
-        boolean confirmOrder = Utils.getStringFromTerminal("Confirm order? [Y]es / [N]o").equalsIgnoreCase("y");
-        if (confirmOrder) {
-            new Receipt(this).writeToFile(out.toString());
+        if (drinks.isEmpty()) {
+            out.append("  (No drinks selected)\n");
+        } else {
+            for (Selection<Product> drink : drinks) {
+                out.append("  - ").append(drink.getProduct().getName())
+                        .append(" (").append(drink.getPricing().getSize().getName()).append(")\n");
+            }
         }
 
+        out.append("\nChips:\n");
+        if (chips.isEmpty()) {
+            out.append("  (No chips selected)\n");
+        } else {
+            for (Selection<Product> chip : chips) {
+                out.append("  - ").append(chip.getProduct().getName())
+                        .append(" (").append(chip.getPricing().getSize().getName()).append(")\n");
+            }
+        }
+
+        out.append("\n============================\n");
+        out.append("TOTAL: ").append(getTotal()).append("\n");
+        out.append("============================\n");
+
+        return out.toString();
     }
 
-    public double getTotal() {
-        int total = 0;
-        for (Sandwich s : this.sandwiches) {
-            total += s.getPrice();
+    public void displayCheckoutScreen() throws IOException {
+        System.out.println(getSummary());
+        boolean confirmOrder = Utils.getStringFromTerminal("Confirm order? [Y]es / [N]o").equalsIgnoreCase("y");
+        if (confirmOrder) {
+            Receipt.writeToFile(this);
         }
-        for (Selection<Chip> c : this.chips) {
-            total += c.getProduct().getPriceForSize(c.getPricing().getSize());
-        }
-        for (Selection<Drink> c : this.drinks) {
-            total += c.getProduct().getPriceForSize(c.getPricing().getSize());
-        }
-        return total;
     }
 
 
